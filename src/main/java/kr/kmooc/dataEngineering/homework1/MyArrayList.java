@@ -46,17 +46,17 @@ public class MyArrayList<E> implements List<E> {
 
     @Override
     public Object[] toArray(Object[] a) {
-        return null;
+        return a;
     }
 
     @Override
-    public boolean add(Object e) {
+    public boolean add(Object o) {
         Object[] newData = new Object[data.length + 1];
 
         for (int i = 0; i < data.length; i++) {
             newData[i] = data[i];
         }
-        newData[data.length] = e;
+        newData[data.length] = o;
         data = newData;
         return true;
     }

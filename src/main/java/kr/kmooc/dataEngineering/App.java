@@ -26,12 +26,7 @@ public class App {
 
         System.out.println("size test: " + (testArrayList.size() == yourArrayList.size()));
         System.out.println("isEmpty test: " + (testArrayList.size() == yourArrayList.size()));
-
-//        System.out.println(testArrayList.toString());
-//        System.out.println(yourArrayList.get(0));
-//        System.out.println(yourArrayList.get(1));
-//        System.out.println(yourArrayList.get(2));
-//
+        
         for (int i = 0; i < testArrayList.size(); i++) {
             if (!testArrayList.get(i).equals(yourArrayList.get(i))) {
                 isPass = false;
