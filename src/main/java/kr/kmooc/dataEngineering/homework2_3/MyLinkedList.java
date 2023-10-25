@@ -174,7 +174,7 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
     private MyNode<E> getNode(int index) {
         if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException("Index " + index + " out of bounds for length " + size);
+            throw new IndexOutOfBoundsException();
         }
 
         int cIdx = 0;
