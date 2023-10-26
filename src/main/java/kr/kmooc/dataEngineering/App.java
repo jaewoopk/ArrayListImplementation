@@ -34,12 +34,12 @@ public class App {
 
         for(int i = 0 ; i < testLinkedList.size(); i++) {
             if(!testLinkedList.get(i).equals(yourLinkedList.get(i))) {
+                System.out.println(testLinkedList.get(i) + " " + yourLinkedList.get(i));
                 isPass = false;
                 break;
             }
         }
         System.out.println("get test : "+ isPass);
-
 
         for(int i = 0 ; i < 100 ; i++) {
             Integer val = arrayList.get(r.nextInt(1000));
@@ -50,6 +50,7 @@ public class App {
         }
         System.out.println("contains test: " + isPass);
         isPass =true;
+
         for(int i = 0 ; i < 100 ; i++) {
             if(!testLinkedList.remove(i).equals(yourLinkedList.remove(i))) {
                 isPass = false;
@@ -123,6 +124,7 @@ public class App {
         Integer val = r.nextInt();
         testQueue.offer(val);
         yourQueue.offer(val);
+        System.out.println();
         val = r.nextInt();
         testQueue.offer(val);
         yourQueue.offer(val);

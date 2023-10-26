@@ -1,11 +1,6 @@
 package kr.kmooc.dataEngineering.homework2_3;
 
-import java.util.AbstractSequentialList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Queue;
+import java.util.*;
 
 public class MyLinkedList<E> implements List<E>, Queue<E> {
     private MyNode<E> first;
@@ -36,32 +31,52 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
     @Override
     public boolean offer(E e) {
-        // TODO Auto-generated method stub
-        return false;
+        if (first == null) {
+            // 비어 있을 때
+            MyNode<E> newNode = new MyNode<>(null, e, null);
+            first = newNode;
+            last = newNode;
+            size++;
+        } else {
+            // 비어 있지 않을 때
+            MyNode<E> newNode = new MyNode<>(last, e, null);
+            last.setNext(newNode);
+            last = newNode;
+            size++;
+        }
+        return true;
     }
 
     @Override
     public E remove() {
-        // TODO Auto-generated method stub
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        return remove(0);
     }
 
     @Override
     public E poll() {
-        // TODO Auto-generated method stub
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        return remove(0);
     }
 
     @Override
     public E element() {
-        // TODO Auto-generated method stub
-        return null;
+        if (size == 0) {
+            throw new NoSuchElementException();
+        }
+        return get(0);
     }
 
     @Override
     public E peek() {
-        // TODO Auto-generated method stub
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        return get(0);
     }
     @Override
     public boolean contains(Object o) {
@@ -80,14 +95,17 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
     @Override
     public Iterator<E> iterator() {
-        // TODO Auto-generated method stub
-        return null;
+        return new MyLinkedListListIterator<E>(this, 0);
     }
 
     @Override
     public Object[] toArray() {
-        // TODO Auto-generated method stub
-        return null;
+        Object[] array = new Object[size];
+        int idx = 0;
+        for (E val : this) {
+            array[idx++] = val;
+        }
+        return array;
     }
 
     @Override
@@ -133,8 +151,26 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
     }
     @Override
     public boolean remove(Object o) {
-        // TODO Auto-generated method stub
-        return false;
+        MyNode<E> nodeToRemove = getNode(o);
+        if (nodeToRemove == null) {
+            return false;
+        }
+
+        MyNode<E> next = nodeToRemove.getNext();
+        MyNode<E> prev = nodeToRemove.getPrev();
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.setNext(next);
+        }
+        if (next == null) {
+            last = prev;
+        } else {
+            next.setPrev(prev);
+        }
+        size--;
+        return true;
     }
 
     @Override
@@ -169,10 +205,12 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
     @Override
     public void clear() {
-        // TODO Auto-generated method stub
+        first = null;
+        last = null;
+        size = 0;
     }
 
-    private MyNode<E> getNode(int index) {
+    public MyNode<E> getNode(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         }
@@ -185,10 +223,24 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
                 return cursor;
             }
             cursor = cursor.getNext();
+            cIdx++;
         } while(cursor != null);
         return null;
     }
 
+    private MyNode<E> getNode(Object o) {
+        int cIdx = 0;
+        MyNode<E> cursor = first;
+
+        do {
+            if (cursor.getItem().equals(o)) {
+                return cursor;
+            }
+            cursor = cursor.getNext();
+            cIdx++;
+        } while(cursor != null);
+        return null;
+    }
     @Override
     public E get(int index) {
         if (index >= size || index < 0) {
@@ -203,13 +255,16 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
                 return cursor.getItem();
             }
             cursor = cursor.getNext();
+            cIdx++;
         } while(cursor != null);
         return null;
     }
     @Override
     public E set(int index, E element) {
-        // TODO Auto-generated method stub
-        return null;
+        MyNode<E> node = getNode(index);
+        E previousOne = node.getItem();
+        node.setItem(element);
+        return previousOne;
     }
 
     @Override
@@ -242,8 +297,24 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
     @Override
     public E remove(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        MyNode<E> nodeToRemove = getNode(index);
+        E element = nodeToRemove.getItem();
+
+        MyNode<E> next = nodeToRemove.getNext();
+        MyNode<E> prev = nodeToRemove.getPrev();
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.setNext(next);
+        }
+        if (next == null) {
+            last = prev;
+        } else {
+            next.setPrev(prev);
+        }
+        size--;
+        return element;
     }
 
     @Override
@@ -277,15 +348,12 @@ public class MyLinkedList<E> implements List<E>, Queue<E> {
 
     @Override
     public ListIterator<E> listIterator() {
-        // TODO Auto-generated method stub
-
-        return null;
+        return new MyLinkedListListIterator<E>(this, 0);
     }
 
     @Override
     public ListIterator<E> listIterator(int index) {
-        // TODO Auto-generated method stub
-        return null;
+        return new MyLinkedListListIterator<E>(this, index);
     }
 
     @Override
