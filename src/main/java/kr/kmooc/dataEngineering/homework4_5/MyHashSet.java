@@ -58,7 +58,12 @@ public class MyHashSet<E> implements Set<E>{
     @Override
     public Object[] toArray() {
         // TODO Auto-generated method stub
-        return null;
+        Object[] array = new Object[size];
+        int idx = 0;
+        for (Object val : this) {
+            array[idx++] = val;
+        }
+        return array;
     }
     @Override
     public <T> T[] toArray(T[] a) {
@@ -98,27 +103,80 @@ public class MyHashSet<E> implements Set<E>{
     @Override
     public boolean containsAll(Collection<?> c) {
         // TODO Auto-generated method stub
-        return false;
+        for (Object val : c) {
+            if (!this.contains(val)) {
+                return false;
+            }
+        }
+        return true;
     }
     @Override
     public boolean addAll(Collection<? extends E> c) {
         // TODO Auto-generated method stub
-        return false;
+        boolean isChanged = false;
+        for (E instance : c) {
+            if (this.add(instance)) {
+                isChanged = true;
+            }
+        }
+        return isChanged;
     }
     @Override
     public boolean retainAll(Collection<?> c) {
         // TODO Auto-generated method stub
-        return false;
+        ArrayList<E> retainList = new ArrayList<E>();
+        boolean isChanged = false;
+        for (E val : this) {
+            if (c.contains(val)) {
+                retainList.add(val);
+            } else {
+                isChanged = true;
+            }
+        }
+        this.clear();
+
+        for (E val : retainList) {
+            this.add(val);
+        }
+        return isChanged ;
     }
     @Override
     public boolean removeAll(Collection<?> c) {
         // TODO Auto-generated method stub
-        return false;
+        boolean isChanged = false;
+        for (Object val : c) {
+            if (this.contains(val)) {
+                this.remove(val);
+                isChanged = true;
+            }
+        }
+        return isChanged;
     }
     @Override
     public void clear() {
         // TODO Auto-generated method stub
         hashTable = new LinkedList[capacity];
+        for (int i = 0; i < capacity; i++) {
+            hashTable[i] = new LinkedList<E>();
+        }
         size = 0;
+    }
+
+    @Override
+    public String toString() {
+        if (size == 0) {
+            return "[]";
+        }
+        String result = "[ ";
+
+        Iterator<E> iterator = this.iterator();
+        result += iterator.next();
+
+        while (iterator.hasNext()) {
+            result += ", " + iterator.next();
+        }
+
+        result += "]";
+        return result;
     }
 }
